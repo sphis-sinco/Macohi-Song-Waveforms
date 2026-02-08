@@ -59,7 +59,7 @@ class PlayState extends FlxState
 			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.ogg', true, false, () ->
 			{
 				startTime = Date.now().getTime();
-				trace('Restarting $song channel: $audioFile');
+				trace('Restarting "$song" channel: $audioFile');
 			});
 
 			// NOTE: Due to a limitation, on HTML5 you have to play the audio source
