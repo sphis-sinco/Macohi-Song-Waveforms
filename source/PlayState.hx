@@ -1,3 +1,6 @@
+import flixel.util.FlxColor;
+import lime.utils.Assets;
+import haxe.Json;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.sound.FlxSound;
 import flixel.FlxG;
@@ -11,18 +14,28 @@ class PlayState extends FlxState
 
 	public var song:String;
 	public var audioFiles:Array<String> = [];
+	public var audioColors:Array<String> = [];
 
 	public final VIEW_AHEAD_SECONDS:Float = 5;
 	public final waveWidth:Float = 64;
 
 	public var startTime:Float = 0;
 
-	override public function new()
+	override public function new(song:String)
 	{
 		super();
 
-		this.song = 'its-fine';
-		this.audioFiles = ['main'];
+		this.song = song;
+		this.audioFiles = [];
+		this.audioColors = [];
+
+		var songJSON:SongMeta = Json.parse(Assets.getText('assets/${this.song}/meta.json'));
+
+		for (audioFile in songJSON.audioFiles)
+		{
+			this.audioFiles.push(audioFile.name);
+			this.audioColors.push(audioFile.color);
+		}
 	}
 
 	/** Convert `s` seconds to milliseconds **/
@@ -67,10 +80,10 @@ class PlayState extends FlxState
 			// waveform.waveformDuration = seconds(audio.length / 1000);
 			waveform.waveformDrawMode = COMBINED;
 
-			waveform.waveformColor = 0xFFE37B9B;
+			waveform.waveformColor = FlxColor.fromString(audioColors[i]);
 			waveform.waveformBgColor = 0x00984E97;
 
-			waveform.waveformRMSColor = 0xFFFFBAF0;
+			waveform.waveformRMSColor = 0xFFFFFFFF;
 
 			waveform.waveformDrawBaseline = false;
 
@@ -100,7 +113,8 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		if (FlxG.keys.justReleased.R) DRAW_RMS = !DRAW_RMS;
+		if (FlxG.keys.justReleased.R)
+			DRAW_RMS = !DRAW_RMS;
 
 		for (waveform in waveforms.members)
 		{
