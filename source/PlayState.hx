@@ -13,6 +13,9 @@ class PlayState extends FlxState
 	public var audioFiles:Array<String> = [];
 
 	public final VIEW_AHEAD_SECONDS:Float = 5;
+	public final waveWidth:Float = 64;
+
+	public var startTime:Float = 0;
 
 	override public function new()
 	{
@@ -32,15 +35,18 @@ class PlayState extends FlxState
 
 		FlxG.autoPause = false;
 
-		waveforms =new FlxTypedGroup<FlxWaveform>();
+		waveforms = new FlxTypedGroup<FlxWaveform>();
 		add(waveforms);
-		
+
 		tracks = [];
 
 		var i = 0;
 		for (audioFile in audioFiles)
 		{
-			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.ogg', true);
+			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.ogg', true, false, () -> {
+				startTime = Date.now().getTime();
+				trace('Restarting $song channel: $audioFile');
+			});
 
 			// NOTE: Due to a limitation, on HTML5 you have to play the audio source
 			// before trying to make a waveform from it.
@@ -50,11 +56,14 @@ class PlayState extends FlxState
 			tracks.push(audio);
 
 			var waveform:FlxWaveform;
-			var waveformOffset:Float = ((i + 1) / audioFiles.length) * 50;
-			waveform = new FlxWaveform(0, 0, FlxG.width, Math.round(FlxG.height - waveformOffset));
+			waveform = new FlxWaveform(0, waveWidth * i, FlxG.width, Math.round(waveWidth));
+
 			waveform.loadDataFromFlxSound(audio);
+			waveform.ID = i;
+
 			waveform.waveformTime = seconds(0);
 			waveform.waveformDuration = seconds(VIEW_AHEAD_SECONDS);
+			// waveform.waveformDuration = seconds(audio.length / 1000);
 			waveform.waveformDrawMode = COMBINED;
 
 			waveform.waveformColor = 0xFFE37B9B;
@@ -63,16 +72,23 @@ class PlayState extends FlxState
 			waveform.waveformDrawRMS = true;
 			waveform.waveformRMSColor = 0xFFFFBAF0;
 
-			waveform.waveformDrawBaseline = true;
+			waveform.waveformDrawBaseline = false;
 
 			waveform.waveformBarSize = 1;
 			waveform.waveformBarPadding = 0;
+
 			// waveform.waveformChannelPadding = 2;
 
-			waveforms.push(waveform);
+			waveform.waveformGainMultiplier = 6;
+
+			// waveform.autoUpdateBitmap = false;
+
+			waveforms.add(waveform);
 
 			i++;
 		}
+
+		startTime = Date.now().getTime();
 
 		for (track in tracks)
 			track.play(true);
@@ -82,11 +98,16 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		for (track in tracks)
+		for (waveform in waveforms.members)
 		{
-			var waveform:FlxWaveform = waveforms[track.ID];
-			if (track.playing && waveform != null)
-				waveform.waveformTime = track.time + getLatency();
+			// FlxG.watch.addQuick('track${waveform.ID + 1}.time', tracks[waveform.ID].time);
+			
+			waveform.waveformTime = (Date.now().getTime() - startTime) + getLatency();
+			// waveform.update(elapsed);
+
+			// waveform.generateWaveformBitmap();
+
+			// waveform.draw();
 		}
 	}
 
