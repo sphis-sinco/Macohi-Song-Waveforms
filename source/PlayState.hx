@@ -43,7 +43,8 @@ class PlayState extends FlxState
 		var i = 0;
 		for (audioFile in audioFiles)
 		{
-			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.ogg', true, false, () -> {
+			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.ogg', true, false, () ->
+			{
 				startTime = Date.now().getTime();
 				trace('Restarting $song channel: $audioFile');
 			});
@@ -99,17 +100,7 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		for (waveform in waveforms.members)
-		{
-			// FlxG.watch.addQuick('track${waveform.ID + 1}.time', tracks[waveform.ID].time);
-			
-			waveform.waveformTime = tracks[waveform.ID].time + getLatency();
-			// waveform.waveformTime = (Date.now().getTime() - startTime) + getLatency();
-			// waveform.update(elapsed);
-
-			// waveform.generateWaveformBitmap();
-
-			// waveform.draw();
-		}
+			waveform.waveformTime = (Date.now().getTime() - startTime) + getLatency();
 	}
 
 	function getLatency():Float
