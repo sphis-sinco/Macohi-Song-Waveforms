@@ -17,7 +17,7 @@ class PlayState extends FlxState
 	public var audioColors:Array<String> = [];
 
 	public final VIEW_AHEAD_SECONDS:Float = 5;
-	public final waveWidth:Float = 64;
+	public final waveHeight:Float = 64;
 
 	public var startTime:Float = 0;
 
@@ -70,7 +70,7 @@ class PlayState extends FlxState
 			tracks.push(audio);
 
 			var waveform:FlxWaveform;
-			waveform = new FlxWaveform(0, waveWidth * i, FlxG.width, Math.round(waveWidth));
+			waveform = new FlxWaveform(0, waveHeight * i, FlxG.width, Math.round(waveHeight));
 
 			waveform.loadDataFromFlxSound(audio);
 			waveform.ID = i;
@@ -95,6 +95,9 @@ class PlayState extends FlxState
 			waveform.waveformGainMultiplier = 6;
 
 			// waveform.autoUpdateBitmap = false;
+
+			var v = Math.round(((audioFiles.length - i) - 1) - (audioFiles.length / 2));
+			waveform.y = v * waveHeight;
 
 			waveforms.add(waveform);
 
