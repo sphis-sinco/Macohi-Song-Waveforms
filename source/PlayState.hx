@@ -70,14 +70,12 @@ class PlayState extends FlxState
 			tracks.push(audio);
 
 			var waveform:FlxWaveform;
-			
-			var v = Math.round(((audioFiles.length - i) - 1) - (audioFiles.length / 2));
 
-			waveform = new FlxWaveform(v * waveWidth, 0, Math.round(waveWidth), FlxG.height);
+			waveform = new FlxWaveform(0, 0, Math.round(waveWidth), FlxG.height);
 
 			waveform.loadDataFromFlxSound(audio);
 			waveform.ID = i;
-			
+
 			waveform.waveformOrientation = VERTICAL;
 
 			waveform.waveformTime = seconds(0);
@@ -100,6 +98,16 @@ class PlayState extends FlxState
 			waveform.waveformGainMultiplier = 6;
 
 			// waveform.autoUpdateBitmap = false;
+
+			waveform.screenCenter();
+			var v = waveform.x;
+
+			if (i < Math.round(audioFiles.length / 2))
+				v -= waveform.width / 2;
+			else if (i > Math.round(audioFiles.length / 2))
+				v += waveform.width / 2;
+
+			waveform.x = v;
 
 			waveforms.add(waveform);
 
