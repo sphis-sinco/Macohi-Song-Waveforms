@@ -110,7 +110,7 @@ class PlayState extends FlxState
 			track.play(true);
 	}
 
-	public var DRAW_RMS:Bool = true;
+	public var DRAW_RMS:Bool = false;
 
 	override public function update(elapsed:Float)
 	{
