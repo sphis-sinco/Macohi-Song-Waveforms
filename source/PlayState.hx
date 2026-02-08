@@ -99,8 +99,7 @@ class PlayState extends FlxState
 
 			// waveform.autoUpdateBitmap = false;
 
-			waveform.screenCenter();
-			var v = waveform.x;
+			var v = FlxG.width / 2;
 
 			if (i < Math.round(audioFiles.length / 2))
 				v -= waveform.width / 2;
