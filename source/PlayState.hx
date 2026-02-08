@@ -37,7 +37,7 @@ class PlayState extends FlxState
 		var i = 0;
 		for (audioFile in audioFiles)
 		{
-			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.wav', true);
+			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.ogg', true);
 
 			// NOTE: Due to a limitation, on HTML5 you have to play the audio source
 			// before trying to make a waveform from it.
