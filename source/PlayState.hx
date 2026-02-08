@@ -70,7 +70,6 @@ class PlayState extends FlxState
 			waveform.waveformColor = 0xFFE37B9B;
 			waveform.waveformBgColor = 0x00984E97;
 
-			waveform.waveformDrawRMS = true;
 			waveform.waveformRMSColor = 0xFFFFBAF0;
 
 			waveform.waveformDrawBaseline = false;
@@ -95,12 +94,19 @@ class PlayState extends FlxState
 			track.play(true);
 	}
 
+	public var DRAW_RMS:Bool = true;
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
+		if (FlxG.keys.justReleased.R) DRAW_RMS = !DRAW_RMS;
+
 		for (waveform in waveforms.members)
+		{
 			waveform.waveformTime = (Date.now().getTime() - startTime) + getLatency();
+			waveform.waveformDrawRMS = DRAW_RMS;
+		}
 	}
 
 	function getLatency():Float
