@@ -94,4 +94,9 @@
 
 	<haxeflag name="--dce full" unless="debug" />
 
+	<define name="CRASH_HANDLER" if="desktop" />
+
+	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER" />
+	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER" />
+	<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER" />
 </project>

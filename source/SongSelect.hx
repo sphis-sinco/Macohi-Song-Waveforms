@@ -3,6 +3,8 @@ import flixel.text.FlxText;
 import lime.utils.Assets;
 import flixel.FlxState;
 
+using StringTools;
+
 class SongSelect extends FlxState
 {
 	public var songListFile:String = 'assets/songs.txt';
@@ -38,12 +40,12 @@ class SongSelect extends FlxState
 		if (songSelect > songList.length - 1)
 			songSelect = 0;
 
-		songText.text = songList[songSelect];
+		songText.text = songList[songSelect].trim();
 		songText.screenCenter();
 
 		if (FlxG.keys.justReleased.ENTER)
 		{
-			FlxG.switchState(() -> new PlayState(songList[songSelect]));
+			FlxG.switchState(() -> new PlayState(songList[songSelect].trim()));
 		}
 	}
 }

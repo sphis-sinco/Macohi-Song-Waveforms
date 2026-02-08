@@ -28,11 +28,11 @@ class PlayState extends FlxState
 	{
 		super();
 
-		this.song = song;
+		this.song = song.trim();
 		this.audioFiles = [];
 		this.audioColors = [];
 
-		var songJSON:SongMeta = Json.parse(Assets.getText('assets/${this.song.trim()}/meta.json'));
+		var songJSON:SongMeta = Json.parse(Assets.getText('assets/${this.song}/meta.json'));
 
 		for (audioFile in songJSON.audioFiles)
 		{
@@ -74,16 +74,9 @@ class PlayState extends FlxState
 
 			var waveform:FlxWaveform;
 
-			var v = FlxG.width / 2;
+			var v:Float = Math.round(((audioFiles.length - i) - 1) - (audioFiles.length / 2));
 
-			if (i < Math.round(audioFiles.length / 2))
-				v -= waveWidth / 2;
-			else if (i > Math.round(audioFiles.length / 2))
-				v += waveWidth / 2;
-
-			v *= (waveWidth / 4);
-
-			waveform = new FlxWaveform(v, 0, Math.round(waveWidth), FlxG.height);
+			waveform = new FlxWaveform(v * waveWidth, 0, Math.round(waveWidth), FlxG.height);
 
 			waveform.loadDataFromFlxSound(audio);
 			waveform.ID = i;
