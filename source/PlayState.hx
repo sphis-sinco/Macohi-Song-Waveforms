@@ -66,7 +66,7 @@ class PlayState extends FlxState
 			waveform.waveformBarPadding = 0;
 			// waveform.waveformChannelPadding = 2;
 
-			add(waveform);
+			waveforms.push(waveform);
 
 			i++;
 		}
