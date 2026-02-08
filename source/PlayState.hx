@@ -1,3 +1,4 @@
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.sound.FlxSound;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -5,7 +6,7 @@ import flixel.addons.display.waveform.FlxWaveform;
 
 class PlayState extends FlxState
 {
-	public var waveforms:Array<FlxWaveform>;
+	public var waveforms:FlxTypedGroup<FlxWaveform>;
 	public var tracks:Array<FlxSound>;
 
 	public var song:String;
@@ -31,7 +32,9 @@ class PlayState extends FlxState
 
 		FlxG.autoPause = false;
 
-		waveforms = [];
+		waveforms =new FlxTypedGroup<FlxWaveform>();
+		add(waveforms);
+		
 		tracks = [];
 
 		var i = 0;
