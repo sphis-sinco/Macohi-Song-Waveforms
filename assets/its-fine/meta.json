@@ -1,5 +1,3 @@
 {
-	"audioFiles": [
-		"main"
-	]
+	"audioFiles": [{ "name": "main", "color": "#ffb2f6" }]
 }
