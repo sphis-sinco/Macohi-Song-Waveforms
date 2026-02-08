@@ -34,9 +34,10 @@ class PlayState extends FlxState
 		waveforms = [];
 		tracks = [];
 
+		var i = 0;
 		for (audioFile in audioFiles)
 		{
-			var audio = FlxG.sound.load('assets/$song/$audioFile.wav', 1.0, true);
+			var audio = new FlxSound().loadEmbedded('assets/$song/$audioFile.wav', true);
 
 			// NOTE: Due to a limitation, on HTML5 you have to play the audio source
 			// before trying to make a waveform from it.
@@ -45,7 +46,8 @@ class PlayState extends FlxState
 			tracks.push(audio);
 
 			var waveform:FlxWaveform;
-			waveform = new FlxWaveform(0, 50, FlxG.width, FlxG.height - 50);
+			var waveformOffset:Float = ((i + 1) / audioFiles.length) * 50;
+			waveform = new FlxWaveform(0, 0, FlxG.width, Math.round(FlxG.height - waveformOffset));
 			waveform.loadDataFromFlxSound(audio);
 			waveform.waveformTime = seconds(0);
 			waveform.waveformDuration = seconds(VIEW_AHEAD_SECONDS);
@@ -64,6 +66,8 @@ class PlayState extends FlxState
 			// waveform.waveformChannelPadding = 2;
 
 			add(waveform);
+
+			i++;
 		}
 
 		for (track in tracks)
