@@ -1,3 +1,4 @@
+import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 import haxe.Json;
@@ -6,6 +7,8 @@ import flixel.sound.FlxSound;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.display.waveform.FlxWaveform;
+
+using StringTools;
 
 class PlayState extends FlxState
 {
@@ -29,7 +32,7 @@ class PlayState extends FlxState
 		this.audioFiles = [];
 		this.audioColors = [];
 
-		var songJSON:SongMeta = Json.parse(Assets.getText('assets/${this.song}/meta.json'));
+		var songJSON:SongMeta = Json.parse(Assets.getText('assets/${this.song.trim()}/meta.json'));
 
 		for (audioFile in songJSON.audioFiles)
 		{
@@ -71,7 +74,16 @@ class PlayState extends FlxState
 
 			var waveform:FlxWaveform;
 
-			waveform = new FlxWaveform(0, 0, Math.round(waveWidth), FlxG.height);
+			var v = FlxG.width / 2;
+
+			if (i < Math.round(audioFiles.length / 2))
+				v -= waveWidth / 2;
+			else if (i > Math.round(audioFiles.length / 2))
+				v += waveWidth / 2;
+
+			v *= (waveWidth / 4);
+
+			waveform = new FlxWaveform(v, 0, Math.round(waveWidth), FlxG.height);
 
 			waveform.loadDataFromFlxSound(audio);
 			waveform.ID = i;
@@ -98,15 +110,6 @@ class PlayState extends FlxState
 			waveform.waveformGainMultiplier = 6;
 
 			// waveform.autoUpdateBitmap = false;
-
-			var v = FlxG.width / 2;
-
-			if (i < Math.round(audioFiles.length / 2))
-				v -= waveform.width / 2;
-			else if (i > Math.round(audioFiles.length / 2))
-				v += waveform.width / 2;
-
-			waveform.x = v;
 
 			waveforms.add(waveform);
 
