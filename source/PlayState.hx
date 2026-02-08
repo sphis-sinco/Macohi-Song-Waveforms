@@ -42,6 +42,7 @@ class PlayState extends FlxState
 			// NOTE: Due to a limitation, on HTML5 you have to play the audio source
 			// before trying to make a waveform from it.
 			// See: https://github.com/ACrazyTown/flixel-waveform/issues/8
+			audio.ID = i;
 			audio.play(true);
 			tracks.push(audio);
 
@@ -78,14 +79,11 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		var i = 0;
 		for (track in tracks)
 		{
-			var waveform:FlxWaveform = waveforms[i];
+			var waveform:FlxWaveform = waveforms[track.ID];
 			if (track.playing && waveform != null)
 				waveform.waveformTime = track.time + getLatency();
-
-			i++;
 		}
 	}
 
