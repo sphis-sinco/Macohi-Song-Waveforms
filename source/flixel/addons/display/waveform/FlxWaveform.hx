@@ -497,10 +497,10 @@ class FlxWaveform extends FlxSprite
                     var peakest:WaveformSegment = segmentRight != null ? WaveformSegment.merge(segmentLeft, segmentRight) : segmentLeft;
                     var x:Float = i * (waveformBarSize + waveformBarPadding);
 
-                    pixels.fillRect(getPeakRect(x, 0, waveformBarSize, waveformOrientation == HORIZONTAL ? waveformHeight : waveformWidth, peakest), waveformColor);
+                    pixels.fillRect(getPeakRect(x, y, waveformBarSize, waveformOrientation == HORIZONTAL ? waveformHeight : waveformWidth, peakest), waveformColor);
 
                     if (waveformDrawRMS)
-                        pixels.fillRect(getRMSRect(x, 0, waveformBarSize, waveformOrientation == HORIZONTAL ? waveformHeight : waveformWidth, peakest), waveformRMSColor);
+                        pixels.fillRect(getRMSRect(x, y, waveformBarSize, waveformOrientation == HORIZONTAL ? waveformHeight : waveformWidth, peakest), waveformRMSColor);
                 }
 
             case SPLIT_CHANNELS:
