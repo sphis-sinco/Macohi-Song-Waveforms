@@ -1,3 +1,4 @@
+import flixel.sound.FlxSound;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.display.waveform.FlxWaveform;
@@ -5,6 +6,7 @@ import flixel.addons.display.waveform.FlxWaveform;
 class PlayState extends FlxState
 {
 	public var waveforms:Array<FlxWaveform>;
+	public var tracks:Array<FlxSound>;
 
 	public var song:String;
 	public var audioFiles:Array<String> = [];
@@ -37,6 +39,7 @@ class PlayState extends FlxState
 			// before trying to make a waveform from it.
 			// See: https://github.com/ACrazyTown/flixel-waveform/issues/8
 			audio.play(true);
+			tracks.push(audio);
 
 			var waveform:FlxWaveform;
 			waveform = new FlxWaveform(0, 50, FlxG.width, FlxG.height - 50);
@@ -59,10 +62,41 @@ class PlayState extends FlxState
 
 			add(waveform);
 		}
+
+		for (track in tracks)
+			track.play(true);
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		var i = 0;
+		for (track in tracks)
+		{
+			var waveform:FlxWaveform = waveforms[i];
+			if (track.playing && waveform != null)
+				waveform.waveformTime = track.time + getLatency();
+
+			i++;
+		}
+	}
+
+	function getLatency():Float
+	{
+		#if js
+		var ctx = lime.media.AudioManager.context.web;
+		if (ctx != null)
+		{
+			var baseLatency:Float = untyped ctx.baseLatency != null ? untyped ctx.baseLatency : 0;
+			var outputLatency:Float = untyped ctx.outputLatency != null ? untyped ctx.outputLatency : 0;
+
+			return (baseLatency + outputLatency) * 1000;
+		}
+
+		return 0;
+		#else
+		return 0;
+		#end
 	}
 }
