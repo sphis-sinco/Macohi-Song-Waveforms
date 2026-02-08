@@ -31,6 +31,9 @@ class PlayState extends FlxState
 
 		FlxG.autoPause = false;
 
+		waveforms = [];
+		tracks = [];
+
 		for (audioFile in audioFiles)
 		{
 			var audio = FlxG.sound.load('assets/$song/$audioFile.wav', 1.0, true);
