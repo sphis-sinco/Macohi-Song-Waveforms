@@ -52,7 +52,7 @@ class PlayState extends FlxState
 			waveform.waveformDrawMode = COMBINED;
 
 			waveform.waveformColor = 0xFFE37B9B;
-			waveform.waveformBgColor = 0xFF984E97;
+			waveform.waveformBgColor = 0x00984E97;
 
 			waveform.waveformDrawRMS = true;
 			waveform.waveformRMSColor = 0xFFFFBAF0;
