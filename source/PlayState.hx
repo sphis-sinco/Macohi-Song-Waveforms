@@ -102,7 +102,8 @@ class PlayState extends FlxState
 		{
 			// FlxG.watch.addQuick('track${waveform.ID + 1}.time', tracks[waveform.ID].time);
 			
-			waveform.waveformTime = (Date.now().getTime() - startTime) + getLatency();
+			waveform.waveformTime = tracks[waveform.ID].time + getLatency();
+			// waveform.waveformTime = (Date.now().getTime() - startTime) + getLatency();
 			// waveform.update(elapsed);
 
 			// waveform.generateWaveformBitmap();
